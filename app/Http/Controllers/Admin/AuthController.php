@@ -15,7 +15,7 @@ class AuthController extends Controller
     {
         $group = 'admin';
 
-        if (!Auth::attempt($request->validated()))
+        if (!Auth::attempt($request->only(['email', 'password'])))
             return back()
                 ->withErrors('Неверный email или пароль');
 

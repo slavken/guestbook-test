@@ -1892,6 +1892,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -1901,10 +1906,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      data: {
-        name: '',
-        message: ''
-      },
+      name: '',
+      message: '',
       status: '',
       isLoading: false,
       errors: {
@@ -1918,23 +1921,28 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.isLoading = true;
-      this.data.name = this.data.name.trim();
-      this.data.message = this.data.message.trim();
+      this.name = this.name.trim();
+      this.message = this.message.trim();
 
-      if (this.data.name && this.data.message) {
+      if (this.name && this.message) {
         fetch('/api/guestbook', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(this.data)
+          body: JSON.stringify({
+            name: this.name,
+            message: this.message
+          })
         }).then(function (res) {
           return res.json();
         }).then(function (res) {
           if (res.errors) throw res;
           _this.status = res.message;
           _this.isLoading = false;
+          _this.name = '';
+          _this.message = '';
           _this.errors = {
             name: null,
             message: null
@@ -37735,8 +37743,8 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.data.name,
-                expression: "data.name"
+                value: _vm.name,
+                expression: "name"
               }
             ],
             staticClass: "form-control px-3 py-4",
@@ -37749,13 +37757,13 @@ var render = function() {
               required: "",
               autofocus: ""
             },
-            domProps: { value: _vm.data.name },
+            domProps: { value: _vm.name },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.data, "name", $event.target.value)
+                _vm.name = $event.target.value
               }
             }
           }),
@@ -37776,8 +37784,8 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.data.message,
-                expression: "data.message"
+                value: _vm.message,
+                expression: "message"
               }
             ],
             staticClass: "form-control p-3",
@@ -37790,13 +37798,13 @@ var render = function() {
               maxlength: "1000",
               required: ""
             },
-            domProps: { value: _vm.data.message },
+            domProps: { value: _vm.message },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.data, "message", $event.target.value)
+                _vm.message = $event.target.value
               }
             }
           }),
@@ -37807,6 +37815,19 @@ var render = function() {
         ],
         1
       ),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c(
+          "div",
+          { staticClass: "col-md-6 mx-auto" },
+          [
+            _vm.errors.message
+              ? _c("Error", { attrs: { err: _vm.errors.captcha } })
+              : _vm._e()
+          ],
+          1
+        )
+      ]),
       _vm._v(" "),
       _c(
         "button",

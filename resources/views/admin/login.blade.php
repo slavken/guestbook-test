@@ -17,7 +17,7 @@
 
     <div class="form-group">
       <label for="email">Email адрес</label>
-      <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('name') }}" aria-describedby="emailHelp" placeholder="Email" required autofocus>
+      <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" aria-describedby="emailHelp" placeholder="Email" required autofocus>
       <small id="emailHelp" class="form-text text-muted">
         We'll never share your email with anyone else.
       </small>
@@ -31,6 +31,11 @@
           <strong>{{ $message }}</strong>
         </span>
       @enderror
+    </div>
+    <div class="form-group">
+      <div class="col-md-6 mx-auto">
+        <div class="g-recaptcha" data-sitekey="{{ env('CAPTCHA_KEY') }}"></div>
+      </div>
     </div>
     <button type="submit" class="btn btn-lg btn-block btn-info">
       Войти

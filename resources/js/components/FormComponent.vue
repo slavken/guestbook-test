@@ -9,6 +9,11 @@
       <textarea v-model="message" class="form-control p-3" v-bind:class="{ 'is-invalid': errors.message }" id="message" name="message" placeholder="Сообщение" rows="7" maxlength="1000" required></textarea>
       <Error v-if="errors.message" v-bind:err="errors.message" />
     </div>
+    <div class="form-group">
+      <div class="col-md-6 mx-auto">
+        <Error v-if="errors.message" v-bind:err="errors.captcha" />
+      </div>
+    </div>
     <button type="submit" class="btn btn-lg btn-block btn-primary">
       {{ isLoading ? 'Загрузка...' : 'Отправить' }}
     </button>
@@ -44,41 +49,41 @@ export default {
       this.message = this.message.trim()
 
       if (this.name && this.message) {
-      fetch('/api/guestbook', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: this.name,
-          message: this.message
+        fetch('/api/guestbook', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: this.name,
+            message: this.message
+          })
         })
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.errors)
-          throw res
+        .then(res => res.json())
+        .then(res => {
+          if (res.errors)
+            throw res
 
-        this.status = res.message
-        this.isLoading = false
-        this.name = ''
-        this.message = ''
-        this.errors = {
-          name: null,
-          message: null
-        }
-      })
-      .catch(err => {
-        if (err.errors.name)
-          this.errors.name = err.errors.name[0]
-        if (err.errors.message)
-          this.errors.message = err.errors.message[0]
+          this.status = res.message
+          this.isLoading = false
+          this.name = ''
+          this.message = ''
+          this.errors = {
+            name: null,
+            message: null
+          }
+        })
+        .catch(err => {
+          if (err.errors.name)
+            this.errors.name = err.errors.name[0]
+          if (err.errors.message)
+            this.errors.message = err.errors.message[0]
 
-        this.status = ''
-        this.isLoading = false
-      })
-    }
+          this.status = ''
+          this.isLoading = false
+        })
+      }
     }
   }
 }
